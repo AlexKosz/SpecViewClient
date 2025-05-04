@@ -18,6 +18,8 @@ import Filters from './components/Filters';
 import applyFilters from '../../utils/applyFilters';
 import getStatusCounts from '../../utils/getStatusCounts';
 
+import axiosWrapper from '../../utils/apiRequests/axiosWrapper';
+
 import urls from '../../urls';
 
 const FileDetailsPage = () => {
@@ -73,10 +75,18 @@ const FileDetailsPage = () => {
     );
   }
 
-  const handleSave = () => {
-    console.log('Save button clicked');
-    console.log('Pathname:', location.pathname);
-    console.log('Search:', location.search);
+  const handleSave = async () => {
+    const data = await axiosWrapper({
+      method: 'post',
+      path: 'files/upload',
+      data: file,
+      compress: true,
+    });
+
+    const createdFile = data?.data?.file;
+    console.log('createdFile:', createdFile);
+
+    const navId = createdFile?._id;
   };
 
   const handleShare = () => {
