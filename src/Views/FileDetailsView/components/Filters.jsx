@@ -117,6 +117,21 @@ const Filters = ({ filterData, setFilterData }) => {
             label="Assertions"
           />
         </Box>
+        <Button
+          variant="outlined"
+          color="error"
+          onClick={() =>
+            setFilterData({
+              searchTerm: '',
+              searchFileName: true,
+              searchFolder: true,
+              searchAssertions: true,
+            })
+          }
+          sx={{ mt: 2 }}
+        >
+          Reset
+        </Button>
       </Popover>
     </div>
   );
