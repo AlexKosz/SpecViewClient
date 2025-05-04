@@ -1,0 +1,46 @@
+body {
+  margin: 0;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell',
+    'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+:root {
+  --primary-bg: #121212; /* Dark background */
+  --secondary-bg: #1c1c1c; /* Slightly lighter background */
+  --highlight-color: #b03a2e; /* Muted red accent color */
+  --text-color: #e0e0e0; /* Light gray text */
+  --button-bg: #d32f2f; /* Brighter red button background */
+  --button-hover-bg: #a12020; /* Darker red for hover effect */
+  --feature-bg: #2c2c2c; /* Feature section background */
+  --error-bg-color: #cf6679; /* Soft red-pink that stands out without clashing */
+  --error-text-color: #1e1e1e; /* Soft red-pink that stands out without clashing */
+  --success-bg-color: #81c784; /* Muted green that contrasts well against the dark background */
+  --success-text-color: #1e1e1e; /* Muted green that contrasts well against the dark background */
+  --info-bg-color: #64b5f6; /* Soft, readable blue */
+  --info-text-color: #1e1e1e; /* Dark text for contrast */
+}
+
+.flex {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.errorBg {
+  background-color: var(--error-bg-color);
+}
+.errorText {
+  color: var(--error-text-color);
+}
+.successBg {
+  background-color: var(--success-bg-color);
+}
+.successText {
+  color: var(--success-text-color);
+}

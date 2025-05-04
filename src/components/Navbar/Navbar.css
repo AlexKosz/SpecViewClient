@@ -1,0 +1,17 @@
+.Navbar {
+  background-color: var(--secondary-bg) !important;
+  color: var(--text-color) !important;
+}
+
+.Navbar .MuiTypography-root {
+  color: var(--text-color);
+}
+
+.Navbar .MuiButton-root {
+  color: var(--text-color);
+  background-color: var(--button-bg);
+}
+
+.Navbar .MuiButton-root:hover {
+  background-color: var(--button-hover-bg);
+}
