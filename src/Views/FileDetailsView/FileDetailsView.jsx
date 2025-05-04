@@ -13,11 +13,19 @@ import './FileDetails.css';
 import chipVariants from '../../components/StatusChip/chipVariants';
 import formatEpochToDate from '../../utils/time';
 import Filters from './components/Filters';
+import applyFilters from '../../utils/applyFilters';
 
 const FileDetailsPage = () => {
   const file = useSelector((state) => state.files.activeFile);
   const location = useLocation();
-  const [filterData, setFilterData] = useState({});
+  const [filterData, setFilterData] = useState({
+    searchTerm: '',
+    searchFileName: true,
+    searchFolder: true,
+    searchAssertions: true,
+  });
+
+  const [treeData, setTreeData] = useState({});
 
   const urlParams = new URLSearchParams(location.search);
   const fileId = urlParams.get('fileId');
@@ -25,8 +33,16 @@ const FileDetailsPage = () => {
   const fileHasData = Object.values(file).some((value) => value !== null);
 
   useEffect(() => {
-    console.log('Filter data:', filterData);
-  }, [filterData]);
+    if (file?.testResults) {
+      const filteredResults = applyFilters({
+        testResults: file?.testResults,
+        filterData,
+      });
+
+      const tree = groupTestResultsAsTree(filteredResults);
+      setTreeData(tree);
+    }
+  }, [file, filterData]);
 
   if (!fileHasData && !fileId) {
     return (
@@ -39,13 +55,6 @@ const FileDetailsPage = () => {
   const passed = file?.numPassedTestSuites || 0;
   const failed = file?.numFailedTestSuites || 0;
   const skipped = file?.numPendingTestSuites || 0;
-
-  const { testResults } = file;
-  let tree = {};
-
-  if (testResults) {
-    tree = groupTestResultsAsTree(testResults);
-  }
 
   return (
     <Box p={4}>
@@ -77,12 +86,31 @@ const FileDetailsPage = () => {
       <Box mb={2} />
 
       <Paper elevation={2}>
-        <RecursiveAccordion
-          data={tree}
-          BaseAccordianBody={BaseAccordianBody}
-          AccordianSummaryBody={AccordianSummaryBody}
-          isTop
-        />
+        {treeData?.children?.length ? (
+          <Box p={2}>
+            <Typography variant="h4">No matches found</Typography>
+            <Typography
+              sx={{ textDecoration: 'underline', cursor: 'hover' }}
+              onClick={() =>
+                setFilterData({
+                  searchTerm: '',
+                  searchFileName: true,
+                  searchFolder: true,
+                  searchAssertions: true,
+                })
+              }
+            >
+              Try clearing your filters
+            </Typography>
+          </Box>
+        ) : (
+          <RecursiveAccordion
+            data={treeData}
+            BaseAccordianBody={BaseAccordianBody}
+            AccordianSummaryBody={AccordianSummaryBody}
+            isTop
+          />
+        )}
       </Paper>
     </Box>
   );
