@@ -4,6 +4,7 @@ const urls = {
   register: '/register',
   dashboard: '/dashboard',
   fileDetails: '/fileDetails',
+  uploadedFileDetails: '/uploadedFileDetails',
 };
 
 export default urls;

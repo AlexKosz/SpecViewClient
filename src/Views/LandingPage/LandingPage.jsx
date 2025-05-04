@@ -43,7 +43,7 @@ const LandingPage = () => {
 
   const handleViewResults = () => {
     dispatch(setActiveFile({ ...fileContent, name: fileName })); // Dispatch the action to set the active file in Redux store.
-    navigate(urls.fileDetails);
+    navigate(urls.uploadedFileDetails);
   };
 
   return (

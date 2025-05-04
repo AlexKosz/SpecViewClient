@@ -15,6 +15,7 @@ const App = () => (
         <Route path={urls.base} element={<LandingPage />} />
         <Route path={urls.dashboard} element={<Dashboard />} />
         <Route path={urls.fileDetails} element={<FileDetailsPage />} />
+        <Route path={urls.uploadedFileDetails} element={<FileDetailsPage />} />
       </Routes>
     </Router>
   </div>
