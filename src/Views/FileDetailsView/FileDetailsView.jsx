@@ -12,6 +12,7 @@ import AccordianSummaryBody from './components/AccordianSummaryBody';
 
 import './FileDetails.css';
 import chipVariants from '../../components/StatusChip/chipVariants';
+import formatEpochToDate from '../../utils/time';
 
 const FileDetailsPage = () => {
   const file = useSelector((state) => state.files.activeFile);
@@ -20,15 +21,14 @@ const FileDetailsPage = () => {
   const urlParams = new URLSearchParams(location.search);
   const fileId = urlParams.get('fileId');
 
-  if (!file && !fileId) {
+  const fileHasData = Object.values(file).some((value) => value !== null);
+  if (!fileHasData && !fileId) {
     return (
       <Box p={4}>
         <Typography variant="h6">File not found or not loaded.</Typography>
       </Box>
     );
   }
-
-  const { name } = file;
 
   const passed = file?.numPassedTestSuites || 0;
   const failed = file?.numFailedTestSuites || 0;
@@ -43,13 +43,19 @@ const FileDetailsPage = () => {
     tree = groupTestResultsAsTree(testResults);
   }
 
-  console.log('tree', tree);
-
   return (
     <Box p={4}>
-      <Typography variant="h4" gutterBottom>
-        {name}
-      </Typography>
+      {file?.name && (
+        <Typography variant="h4" gutterBottom>
+          {file?.name}
+        </Typography>
+      )}
+
+      {file?.startTime && (
+        <Typography variant="h6" gutterBottom>
+          Time Ran:{` ${formatEpochToDate(file?.startTime)}`}
+        </Typography>
+      )}
 
       <Box mb={3}>
         <StatusChip count={passed} label="Passed" color="success" variant={chipVariants.success} />
