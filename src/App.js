@@ -6,6 +6,7 @@ import LandingPage from './Views/LandingPage/LandingPage';
 import FileDetailsPage from './Views/FileDetailsView/FileDetailsView';
 
 import urls from './urls';
+import SignIn from './Views/SignIn';
 
 const App = () => (
   <div className="App">
@@ -16,6 +17,7 @@ const App = () => (
         <Route path={urls.dashboard} element={<Dashboard />} />
         <Route path={urls.fileDetails} element={<FileDetailsPage />} />
         <Route path={urls.uploadedFileDetails} element={<FileDetailsPage />} />
+        <Route path="/login" element={<SignIn />} />
       </Routes>
     </Router>
   </div>
