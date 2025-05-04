@@ -20,3 +20,8 @@
   align-items: center;
   gap: 0.5rem;
 }
+
+:root {
+  --outlined-infoButton-disabled-color: #90a0d3bb;
+  --outlined-infoButton-color: #5fbad6;
+}

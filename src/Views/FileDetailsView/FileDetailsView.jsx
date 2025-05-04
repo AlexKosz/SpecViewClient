@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Box, Typography, Paper } from '@mui/material';
-import { useLocation } from 'react-router-dom';
+import { Button, Box, Typography, Paper, Tooltip } from '@mui/material';
+import { useLocation, useNavigate } from 'react-router-dom';
+import SaveIcon from '@mui/icons-material/Save';
+import ShareIcon from '@mui/icons-material/Share';
 import { groupTestResultsAsTree } from '../../utils/groupFilesByPath';
 
 import StatusChip from '../../components/StatusChip/StatusChip';
@@ -15,6 +17,8 @@ import formatEpochToDate from '../../utils/time';
 import Filters from './components/Filters';
 import applyFilters from '../../utils/applyFilters';
 import getStatusCounts from '../../utils/getStatusCounts';
+
+import urls from '../../urls';
 
 const FileDetailsPage = () => {
   const file = useSelector((state) => state.files.activeFile);
@@ -32,6 +36,7 @@ const FileDetailsPage = () => {
   const [treeData, setTreeData] = useState({});
 
   const urlParams = new URLSearchParams(location.search);
+  const navigate = useNavigate();
   const fileId = urlParams.get('fileId');
 
   const fileHasData = Object.values(file).some((value) => value !== null);
@@ -54,26 +59,96 @@ const FileDetailsPage = () => {
   }, [fileList]);
 
   if (!fileHasData && !fileId) {
+    // no file, navigate to landing page (or user dashboard)
+    if (location.pathname === urls.uploadedFileDetails) {
+      navigate(urls.base);
+    }
+
     return (
       <Box p={4}>
-        <Typography variant="h6">File not found or not loaded.</Typography>
+        <Typography variant="h6">
+          File not found or not loaded. Navgiating to uploading page...
+        </Typography>
       </Box>
     );
   }
 
+  const handleSave = () => {
+    console.log('Save button clicked');
+    console.log('Pathname:', location.pathname);
+    console.log('Search:', location.search);
+  };
+
+  const handleShare = () => {
+    console.log('Share button clicked');
+    console.log('Pathname:', location.pathname);
+    console.log('Search:', location.search);
+  };
+
+  const isFileOnlyUploaded = location.pathname === urls.uploadedFileDetails;
+
   return (
     <Box p={4}>
-      {file?.name && (
-        <Typography variant="h4" gutterBottom>
-          {file?.name}
-        </Typography>
-      )}
+      <Box display="flex" justifyContent="space-between" alignItems="center">
+        <Box>
+          <Typography variant="h4" gutterBottom>
+            {file?.name}
+          </Typography>
+          <Typography variant="h6" gutterBottom>
+            Time Ran:{` ${formatEpochToDate(file?.startTime)}`}
+          </Typography>
+        </Box>
 
-      {file?.startTime && (
-        <Typography variant="h6" gutterBottom>
-          Time Ran:{` ${formatEpochToDate(file?.startTime)}`}
-        </Typography>
-      )}
+        <Box sx={{ display: 'flex', gap: 2 }}>
+          {location.pathname === urls.uploadedFileDetails && (
+            <Button
+              startIcon={<SaveIcon />}
+              color="primary"
+              onClick={handleSave}
+              variant="outlined"
+              sx={{
+                color: 'var(--outlined-infoButton-color)',
+                border: `1px solid var(--outlined-infoButton-color)`,
+                cursor: !isFileOnlyUploaded ? 'pointer' : 'not-allowed',
+              }}
+            >
+              Save
+            </Button>
+          )}
+
+          <Tooltip
+            title="You have to save the file before sharing"
+            placement="top-start"
+            arrow
+            // show tooltip when file has been uploaded but not saved
+            disableHoverListener={!isFileOnlyUploaded}
+            disableFocusListener={!isFileOnlyUploaded}
+            disableTouchListener={!isFileOnlyUploaded}
+          >
+            <Box sx={{ cursor: isFileOnlyUploaded ? 'not-allowed' : 'pointer' }}>
+              <Button
+                startIcon={<ShareIcon />}
+                color="primary"
+                onClick={handleShare}
+                variant="outlined"
+                sx={{
+                  color: isFileOnlyUploaded
+                    ? 'var(--outlined-infoButton-disabled-color)'
+                    : 'var(--outlined-infoButton-color)',
+                  border: `1px solid var(--${
+                    isFileOnlyUploaded
+                      ? 'outlined-infoButton-disabled-color'
+                      : 'outlined-infoButton-color'
+                  })`,
+                  pointerEvents: isFileOnlyUploaded ? 'none' : 'auto',
+                }}
+              >
+                Share
+              </Button>
+            </Box>
+          </Tooltip>
+        </Box>
+      </Box>
 
       <Filters filterData={filterData} setFilterData={setFilterData} />
 
