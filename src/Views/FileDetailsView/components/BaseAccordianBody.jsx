@@ -4,33 +4,37 @@ import PropTypes from 'prop-types';
 const BaseAccordianBody = ({ data }) => {
   return (
     <div>
-      <ul>
-        {data?.assertionResults.map((assertion) => {
-          return (
-            <li
-              key={assertion.fullName}
-              style={{
-                listStyleType: 'none',
-                color: assertion.status === 'passed' ? 'green' : 'red',
-              }}
-            >
-              <strong>{assertion.fullName}</strong>
-              <ul>
-                <li>
-                  <strong>Status:</strong>
-                  {assertion.status}
-                </li>
-                {assertion.failureMessages?.[0] && (
+      {!data?.assertionResults?.length ? (
+        <h5>No data</h5>
+      ) : (
+        <ul>
+          {data?.assertionResults?.map((assertion) => {
+            return (
+              <li
+                key={assertion.fullName}
+                style={{
+                  listStyleType: 'none',
+                  color: assertion.status === 'passed' ? 'green' : 'red',
+                }}
+              >
+                <strong>{assertion.fullName}</strong>
+                <ul>
                   <li>
-                    <strong>Failure Message:</strong>
-                    {assertion.failureMessages?.[0] || 'No failure message'}
+                    <strong>Status:</strong>
+                    {assertion.status}
                   </li>
-                )}
-              </ul>
-            </li>
-          );
-        })}
-      </ul>
+                  {assertion.failureMessages?.[0] && (
+                    <li>
+                      <strong>Failure Message:</strong>
+                      {assertion.failureMessages?.[0] || 'No failure message'}
+                    </li>
+                  )}
+                </ul>
+              </li>
+            );
+          })}
+        </ul>
+      )}
     </div>
   );
 };
