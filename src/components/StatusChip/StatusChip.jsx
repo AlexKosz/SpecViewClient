@@ -7,8 +7,6 @@ import './StatusChip.css';
 const StatusChip = ({ label, count, variant }) => {
   const variantClass = chipVariants[variant] || chipVariants.default;
 
-  console.log(`--${variantClass}-text-color`);
-
   return (
     <Chip
       label={`${label}: ${count}`}
