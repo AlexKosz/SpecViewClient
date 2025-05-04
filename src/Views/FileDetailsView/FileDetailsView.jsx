@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Box, Typography, Paper } from '@mui/material';
-
 import { useLocation } from 'react-router-dom';
 import { groupTestResultsAsTree } from '../../utils/groupFilesByPath';
 
@@ -13,15 +12,22 @@ import AccordianSummaryBody from './components/AccordianSummaryBody';
 import './FileDetails.css';
 import chipVariants from '../../components/StatusChip/chipVariants';
 import formatEpochToDate from '../../utils/time';
+import Filters from './components/Filters';
 
 const FileDetailsPage = () => {
   const file = useSelector((state) => state.files.activeFile);
   const location = useLocation();
+  const [filterData, setFilterData] = useState({});
 
   const urlParams = new URLSearchParams(location.search);
   const fileId = urlParams.get('fileId');
 
   const fileHasData = Object.values(file).some((value) => value !== null);
+
+  useEffect(() => {
+    console.log('Filter data:', filterData);
+  }, [filterData]);
+
   if (!fileHasData && !fileId) {
     return (
       <Box p={4}>
@@ -35,8 +41,6 @@ const FileDetailsPage = () => {
   const skipped = file?.numPendingTestSuites || 0;
 
   const { testResults } = file;
-  // console.log('testResults', testResults?.slice(0, 5));
-
   let tree = {};
 
   if (testResults) {
@@ -68,11 +72,16 @@ const FileDetailsPage = () => {
         />
       </Box>
 
+      <Filters filterData={filterData} setFilterData={setFilterData} />
+
+      <Box mb={2} />
+
       <Paper elevation={2}>
         <RecursiveAccordion
           data={tree}
           BaseAccordianBody={BaseAccordianBody}
           AccordianSummaryBody={AccordianSummaryBody}
+          isTop
         />
       </Paper>
     </Box>
