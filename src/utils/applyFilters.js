@@ -17,11 +17,20 @@ const checkFolderNameMatch = (testResults, searchTerm) => {
 };
 
 const checkForAnAssertionMatch = (testResults, searchTerm) => {
-  return testResults.filter((testResult) => {
-    return testResult.assertionResults.some(
-      (assertion) => assertion.fullName.toLowerCase().includes(searchTerm.toLowerCase()) // Case-insensitive match
-    );
-  });
+  return testResults
+    .map((testResult) => {
+      const matchingAssertions = testResult.assertionResults.filter(
+        (assertion) => assertion.fullName.toLowerCase().includes(searchTerm.toLowerCase()) // Case-insensitive match
+      );
+      // Return new object with matching assertions only if there are matches
+      return matchingAssertions.length > 0
+        ? {
+            ...testResult,
+            assertionResults: matchingAssertions,
+          }
+        : null;
+    })
+    .filter(Boolean); // Remove null entries (files with no matching assertions)
 };
 
 // if user allows folder matches, and path contains a match, return all assertions for that file
