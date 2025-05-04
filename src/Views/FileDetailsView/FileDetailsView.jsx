@@ -14,6 +14,7 @@ import chipVariants from '../../components/StatusChip/chipVariants';
 import formatEpochToDate from '../../utils/time';
 import Filters from './components/Filters';
 import applyFilters from '../../utils/applyFilters';
+import getStatusCounts from '../../utils/getStatusCounts';
 
 const FileDetailsPage = () => {
   const file = useSelector((state) => state.files.activeFile);
@@ -24,6 +25,9 @@ const FileDetailsPage = () => {
     searchFolder: true,
     searchAssertions: true,
   });
+
+  const [fileList, setFileList] = useState([]);
+  const [statusCounts, setStatusCounts] = useState({});
 
   const [treeData, setTreeData] = useState({});
 
@@ -39,10 +43,15 @@ const FileDetailsPage = () => {
         filterData,
       });
 
+      setFileList(filteredResults);
       const tree = groupTestResultsAsTree(filteredResults);
       setTreeData(tree);
     }
   }, [file, filterData]);
+
+  useEffect(() => {
+    setStatusCounts(getStatusCounts(fileList));
+  }, [fileList]);
 
   if (!fileHasData && !fileId) {
     return (
@@ -51,10 +60,6 @@ const FileDetailsPage = () => {
       </Box>
     );
   }
-
-  const passed = file?.numPassedTestSuites || 0;
-  const failed = file?.numFailedTestSuites || 0;
-  const skipped = file?.numPendingTestSuites || 0;
 
   return (
     <Box p={4}>
@@ -70,18 +75,32 @@ const FileDetailsPage = () => {
         </Typography>
       )}
 
-      <Box mb={3}>
-        <StatusChip count={passed} label="Passed" color="success" variant={chipVariants.success} />
-        <StatusChip count={failed} label="Failed" color="error" variant={chipVariants.error} />
+      <Filters filterData={filterData} setFilterData={setFilterData} />
+
+      <Box mt={1}>
         <StatusChip
-          count={skipped}
+          count={statusCounts?.passed || 0}
+          label="Passed"
+          color="success"
+          variant={chipVariants.success}
+        />
+        <StatusChip
+          count={statusCounts?.failed || 0}
+          label="Failed"
+          color="error"
+          variant={chipVariants.error}
+        />
+        <StatusChip
+          count={Object.values(statusCounts).reduce(
+            (sum, type) =>
+              ['skipped', 'pending', 'todo', 'ignored'].includes(type) ? sum + 1 : sum,
+            0
+          )}
           label="Skipped"
           color="default"
           variant={chipVariants.default}
         />
       </Box>
-
-      <Filters filterData={filterData} setFilterData={setFilterData} />
 
       <Box mb={2} />
 
