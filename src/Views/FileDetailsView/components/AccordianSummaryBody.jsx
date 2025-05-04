@@ -4,7 +4,12 @@ import PropTypes from 'prop-types';
 const AccordianSummaryBody = ({ data }) => {
   return (
     <div className="accordianSummaryBox">
-      <h5>{data.name}</h5>
+      <h5>
+        {typeof data.name === 'string' && data.name.trim()
+          ? data.name.charAt(0).toUpperCase() + data.name.slice(1)
+          : ''}
+      </h5>
+
       <div className="flex accordianCountsWrapper">
         {typeof data.passed === 'number' && (
           <div className="successBg successText summaryCountBox">{data.passed}</div>
