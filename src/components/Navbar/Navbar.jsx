@@ -36,8 +36,8 @@ const Navbar = () => {
         path: 'users/loggedin',
       });
 
-      if (data?.data?.verified) {
-        dispatch(updateUserInfo(data));
+      if (data?.data?._id) {
+        dispatch(updateUserInfo(data?.data));
       }
     };
 
