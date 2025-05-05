@@ -12,6 +12,7 @@ import axiosWrapper from '../../utils/apiRequests/axiosWrapper';
 import { logout, updateUserInfo } from '../../features/user/userSlice';
 
 import LoginModal from '../Login/LoginModal';
+import RegisterModal from '../Register/RegisterModal';
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -19,6 +20,7 @@ const Navbar = () => {
   const user = useSelector((state) => state.user.userInfo);
 
   const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [isRegisterOpen, setIsRegisterOpen] = useState(false);
 
   const onTitleClick = () => {
     navigate(urls.base); // Navigate to the base URL when the title is clicked
@@ -78,7 +80,24 @@ const Navbar = () => {
             Logout
           </Button>
         )}
-        {isLoginOpen && <LoginModal onClose={() => setIsLoginOpen(false)} />}
+        {isLoginOpen && (
+          <LoginModal
+            onClose={() => setIsLoginOpen(false)}
+            switchToRegister={() => {
+              setIsRegisterOpen(true);
+              setIsLoginOpen(false);
+            }}
+          />
+        )}
+        {isRegisterOpen && (
+          <RegisterModal
+            onClose={() => setIsRegisterOpen(false)}
+            switchToLogin={() => {
+              setIsRegisterOpen(false);
+              setIsLoginOpen(true);
+            }}
+          />
+        )}
       </Toolbar>
     </AppBar>
   );
