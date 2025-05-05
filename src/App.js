@@ -5,23 +5,22 @@ import Dashboard from './Views/Dashboard/Dashboard';
 import Navbar from './components/Navbar/Navbar';
 import LandingPage from './Views/LandingPage/LandingPage';
 import FileDetailsPage from './Views/FileDetailsView/FileDetailsView';
-import SignIn from './Views/SignIn';
 import urls from './urls';
 
 const App = () => {
   const user = useSelector((state) => state.user.userInfo);
 
+  const homePage = user ? <Dashboard /> : <LandingPage />;
   return (
     <div className="App">
       <Router>
         <Navbar />
         <Routes>
-          <Route path={urls.base} element={user ? <Dashboard /> : <LandingPage />} />
+          <Route path={urls.base} element={homePage} />
           <Route path={urls.dashboard} element={<Dashboard />} />
           <Route path={urls.fileDetails} element={<FileDetailsPage />} />
           <Route path={urls.uploadedFileDetails} element={<FileDetailsPage />} />
-          <Route path="/login" element={<SignIn />} />
-          <Route path="*" element={<LandingPage />} />
+          <Route path="*" element={homePage} />
         </Routes>
       </Router>
     </div>
