@@ -1,38 +1,93 @@
-/* eslint-disable react/button-has-type */
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { login } from '../../features/user/userSlice';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { Box, Typography, Grid, CircularProgress, Button } from '@mui/material';
 import axiosWrapper from '../../utils/apiRequests/axiosWrapper';
+import FileCard from './components/FileCard';
+import UploadModal from './components/UploadModal';
 
 const Dashboard = () => {
   const user = useSelector((state) => state.user.userInfo);
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const [files, setFiles] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [isModalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await axiosWrapper({
-        method: 'get',
-        path: 'files/getUserFiles',
-      });
+      try {
+        const data = await axiosWrapper({
+          method: 'get',
+          path: 'files/getUserFiles',
+        });
 
-      const files = data?.data?.files;
-      console.log('files:', files);
+        setFiles(data?.data?.files || []);
+      } catch (error) {
+        console.error('Error fetching files:', error);
+      } finally {
+        setLoading(false);
+      }
     };
 
-    fetchData();
-  }, [user?.data]);
+    if (user) {
+      fetchData();
+    }
+  }, [user]);
 
-  return user ? (
-    <div>
-      <h1>Welcome {user?.fullName}</h1>
-    </div>
-  ) : (
-    <div>
-      <h1>Loading</h1>
-    </div>
+  const handleUpload = async (file) => {
+    try {
+      const response = await axiosWrapper({
+        method: 'post',
+        path: 'files/upload',
+        data: file,
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+
+      if (response?.data?.file) {
+        setFiles((prevFiles) => [response.data.file, ...prevFiles]);
+      }
+    } catch (error) {
+      console.error('Error uploading file:', error);
+    }
+  };
+
+  if (!user) {
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
+        <Typography variant="h4">Loading...</Typography>
+      </Box>
+    );
+  }
+
+  return (
+    <Box sx={{ padding: 2 }}>
+      <Typography variant="h4" gutterBottom>
+        Welcome, {user?.fullName}
+      </Typography>
+
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={() => setModalOpen(true)}
+        sx={{ marginBottom: 2 }}
+      >
+        Upload File
+      </Button>
+
+      {loading ? (
+        <Box display="flex" justifyContent="center" alignItems="center" minHeight="50vh">
+          <CircularProgress />
+        </Box>
+      ) : (
+        <Grid container spacing={2}>
+          {files.map((file) => (
+            <Grid item xs={12} sm={6} md={4} key={file._id}>
+              <FileCard file={file} />
+            </Grid>
+          ))}
+        </Grid>
+      )}
+
+      <UploadModal open={isModalOpen} onClose={() => setModalOpen(false)} onUpload={handleUpload} />
+    </Box>
   );
 };
 
