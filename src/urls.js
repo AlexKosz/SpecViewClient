@@ -1,9 +1,11 @@
+export const baseFileDetailsUrl = '/fileDetails';
+
 const urls = {
   base: '/',
   login: '/login',
   register: '/register',
   dashboard: '/dashboard',
-  fileDetails: '/fileDetails/:fileId',
+  fileDetails: `${baseFileDetailsUrl}/:fileId`,
   uploadedFileDetails: '/uploadedFileDetails',
 };
 

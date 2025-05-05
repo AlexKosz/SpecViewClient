@@ -20,7 +20,7 @@ import getStatusCounts from '../../utils/getStatusCounts';
 
 import axiosWrapper from '../../utils/apiRequests/axiosWrapper';
 
-import urls from '../../urls';
+import urls, { baseFileDetailsUrl } from '../../urls';
 import { setActiveFile } from '../../features/files/filesSlice';
 
 const FileDetailsPage = () => {
@@ -107,7 +107,7 @@ const FileDetailsPage = () => {
 
     const createdFile = data?.data?.file;
 
-    navigate(`/fileDetails/${createdFile._id}`);
+    navigate(`${baseFileDetailsUrl}/${createdFile._id}`);
   };
 
   const handleShare = async () => {
