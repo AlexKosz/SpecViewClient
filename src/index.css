@@ -24,6 +24,8 @@ code {
   --success-text-color: #1e1e1e; /* Muted green that contrasts well against the dark background */
   --info-bg-color: #64b5f6; /* Soft, readable blue */
   --info-text-color: #1e1e1e; /* Dark text for contrast */
+  --snackbar-background-color: #ff8e8e; /* Snackbar background */
+  --snackbar-text-color: #1f0101; /* Snackbar text color */
 }
 
 .flex {

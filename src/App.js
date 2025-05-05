@@ -18,6 +18,9 @@ const App = () => (
         <Route path={urls.fileDetails} element={<FileDetailsPage />} />
         <Route path={urls.uploadedFileDetails} element={<FileDetailsPage />} />
         <Route path="/login" element={<SignIn />} />
+
+        {/* Catch-all route for unmatched URLs */}
+        <Route path="*" element={<LandingPage />} />
       </Routes>
     </Router>
   </div>

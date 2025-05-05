@@ -20,6 +20,8 @@
     "prettier/prettier": ["error"], // Enforce Prettier formatting as errors
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
     "react/react-in-jsx-scope": "off",
+    "import/no-extraneous-dependencies": "off",
+    "no-underscore-dangle": "off",
     "react/function-component-definition": [
       "error",
       {

@@ -3,7 +3,7 @@ const urls = {
   login: '/login',
   register: '/register',
   dashboard: '/dashboard',
-  fileDetails: '/fileDetails',
+  fileDetails: '/fileDetails/:fileId',
   uploadedFileDetails: '/uploadedFileDetails',
 };
 

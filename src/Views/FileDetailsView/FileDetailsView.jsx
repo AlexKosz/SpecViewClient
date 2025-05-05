@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { Button, Box, Typography, Paper, Tooltip } from '@mui/material';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { Button, Box, Typography, Paper, Snackbar, Tooltip } from '@mui/material';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import SaveIcon from '@mui/icons-material/Save';
 import ShareIcon from '@mui/icons-material/Share';
 import { groupTestResultsAsTree } from '../../utils/groupFilesByPath';
@@ -21,10 +21,12 @@ import getStatusCounts from '../../utils/getStatusCounts';
 import axiosWrapper from '../../utils/apiRequests/axiosWrapper';
 
 import urls from '../../urls';
+import { setActiveFile } from '../../features/files/filesSlice';
 
 const FileDetailsPage = () => {
   const file = useSelector((state) => state.files.activeFile);
   const location = useLocation();
+  const dispatch = useDispatch();
   const [filterData, setFilterData] = useState({
     searchTerm: '',
     searchFileName: true,
@@ -32,14 +34,16 @@ const FileDetailsPage = () => {
     searchAssertions: true,
   });
 
+  const [isCopySnackbarOpen, setIsCopySnackbarOpen] = useState(false);
+  const [isLoginSnackBarOpen, setIsLoginSnackbarOpen] = useState(false);
+  const { fileId } = useParams();
+
   const [fileList, setFileList] = useState([]);
   const [statusCounts, setStatusCounts] = useState({});
 
   const [treeData, setTreeData] = useState({});
 
-  const urlParams = new URLSearchParams(location.search);
   const navigate = useNavigate();
-  const fileId = urlParams.get('fileId');
 
   const fileHasData = Object.values(file).some((value) => value !== null);
 
@@ -60,20 +64,29 @@ const FileDetailsPage = () => {
     setStatusCounts(getStatusCounts(fileList));
   }, [fileList]);
 
-  if (!fileHasData && !fileId) {
-    // no file, navigate to landing page (or user dashboard)
-    if (location.pathname === urls.uploadedFileDetails) {
-      navigate(urls.base);
-    }
+  useEffect(() => {
+    const fetchFile = async () => {
+      if (!fileHasData && fileId) {
+        const selectedFileId = fileId;
+        const fileReadRes = await axiosWrapper({
+          method: 'post',
+          path: 'files/readById',
+          data: {
+            id: selectedFileId,
+          },
+        });
 
-    return (
-      <Box p={4}>
-        <Typography variant="h6">
-          File not found or not loaded. Navgiating to uploading page...
-        </Typography>
-      </Box>
-    );
-  }
+        if (fileReadRes?.data) {
+          // Optionally: dispatch to store or handle setting local state here
+          dispatch(setActiveFile(fileReadRes?.data));
+        } else {
+          navigate(urls.base);
+        }
+      }
+    };
+
+    fetchFile();
+  }, [fileHasData, location.pathname, fileId, navigate, dispatch]);
 
   const handleSave = async () => {
     const data = await axiosWrapper({
@@ -83,23 +96,67 @@ const FileDetailsPage = () => {
       compress: true,
     });
 
-    const createdFile = data?.data?.file;
-    console.log('createdFile:', createdFile);
+    const error = data?.error;
 
-    const navId = createdFile?._id;
+    if (error) {
+      if (data?.error?.status === 401) {
+        setIsLoginSnackbarOpen(true);
+        return;
+      }
+    }
+
+    const createdFile = data?.data?.file;
+
+    navigate(`/fileDetails/${createdFile._id}`);
   };
 
-  const handleShare = () => {
-    console.log('Share button clicked');
-    console.log('Pathname:', location.pathname);
-    console.log('Search:', location.search);
+  const handleShare = async () => {
+    if (isCopySnackbarOpen) return;
+    const currentUrl = window.location.href;
+    await navigator.clipboard.writeText(currentUrl);
+    setIsCopySnackbarOpen(true);
+  };
+
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') return;
+    setIsCopySnackbarOpen(false);
+    setIsLoginSnackbarOpen(false);
   };
 
   const isFileOnlyUploaded = location.pathname === urls.uploadedFileDetails;
 
+  const snackbarProps = {
+    autoHideDuration: 3000,
+    onClose: handleSnackbarClose,
+    anchorOrigin: { vertical: 'top', horizontal: 'center' },
+    sx: {
+      '& .MuiSnackbarContent-root': {
+        backgroundColor: 'var(--snackbar-background-color)',
+        color: 'var(--snackbar-text-color)',
+      },
+    },
+  };
+
   return (
     <Box p={4}>
       <Box display="flex" justifyContent="space-between" alignItems="center">
+        <Snackbar
+          open={isCopySnackbarOpen}
+          message="Link copied to clipboard!"
+          autoHideDuration={snackbarProps.autoHideDuration}
+          onClose={snackbarProps.onClose}
+          anchorOrigin={snackbarProps.anchorOrigin}
+          sx={snackbarProps.sx}
+        />
+        <Snackbar
+          open={isLoginSnackBarOpen}
+          message="Login expired. Please login again before trying to save again."
+          autoHideDuration={snackbarProps.autoHideDuration}
+          onClose={snackbarProps.onClose}
+          anchorOrigin={snackbarProps.anchorOrigin}
+          sx={snackbarProps.sx}
+        />
+
         <Box>
           <Typography variant="h4" gutterBottom>
             {file?.name}
