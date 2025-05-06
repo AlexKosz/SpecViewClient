@@ -9,7 +9,7 @@ const FileCard = ({ file }) => {
     { name: 'Failed', value: file.numFailedTestSuites || 0, color: '#FF4040' },
     {
       name: 'Skipped',
-      value: file.numPendingTestSuites || 0 + file.numRuntimeErrorTestSuites || 0,
+      value: (file.numPendingTestSuites || 0) + (file.numRuntimeErrorTestSuites || 0),
       color: '#FFBB28',
     },
   ];
