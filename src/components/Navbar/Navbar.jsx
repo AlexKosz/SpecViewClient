@@ -70,14 +70,13 @@ const Navbar = () => {
           <img src="/logo.svg" alt="Logo" style={{ height: '24px', marginRight: '8px' }} />
           SpecView
         </Typography>
-        {!user?.data && (
-          <Button className="MuiButton-root" onClick={() => setIsLoginOpen(true)}>
-            Login
-          </Button>
-        )}
-        {user?.data && (
+        {user?._id ? (
           <Button className="MuiButton-root" onClick={handleLogOut}>
             Logout
+          </Button>
+        ) : (
+          <Button className="MuiButton-root" onClick={() => setIsLoginOpen(true)}>
+            Login
           </Button>
         )}
         {isLoginOpen && (
