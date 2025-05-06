@@ -80,9 +80,17 @@ const Dashboard = () => {
           <CircularProgress />
         </Box>
       ) : (
-        <Grid container spacing={2}>
+        <Grid container spacing={2} justifyContent="center" alignItems="center">
           {files.map((file) => (
-            <Grid item xs={12} sm={6} md={4} key={file._id} onClick={() => onFlieCardClick(file)}>
+            <Grid
+              item
+              xs={12}
+              sm={6}
+              md={4}
+              key={file._id}
+              onClick={() => onFlieCardClick(file)}
+              sx={{ cursor: 'pointer' }}
+            >
               <FileCard file={file} />
             </Grid>
           ))}
