@@ -19,10 +19,6 @@ const BaseAccordianBody = ({ data }) => {
               >
                 <strong>{assertion.fullName}</strong>
                 <ul>
-                  <li>
-                    <strong>Status:</strong>
-                    {assertion.status}
-                  </li>
                   {assertion.failureMessages?.[0] && (
                     <li>
                       <strong>Failure Message:</strong>
