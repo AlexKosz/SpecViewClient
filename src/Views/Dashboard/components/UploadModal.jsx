@@ -179,7 +179,7 @@ const UploadModal = ({ open, onClose, onUpload }) => {
               },
             }}
           >
-            Upload
+            Go to Preview
           </Button>
         </Box>
       </Box>
