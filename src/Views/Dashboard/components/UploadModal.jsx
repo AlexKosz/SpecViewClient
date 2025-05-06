@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Modal, Box, Button, Typography } from '@mui/material';
+import { Modal, Box, Button, Typography, TextField } from '@mui/material';
 import validateUploadedJSON from '../../../utils/validateUploadedJSON';
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
@@ -53,13 +53,13 @@ const UploadModal = ({ open, onClose, onUpload }) => {
   };
 
   const handleUpload = () => {
-    if (fileContent) {
+    if (fileContent && fileName.trim()) {
       onUpload({ ...fileContent, name: fileName });
       setFileName('');
       setError('');
       onClose();
     } else {
-      setError('Please select a valid file to upload.');
+      setError('Please select a valid file and provide a name.');
     }
   };
 
@@ -120,12 +120,27 @@ const UploadModal = ({ open, onClose, onUpload }) => {
           </Button>
 
           {fileName && !error && (
-            <Typography
-              variant="body2"
-              sx={{ color: 'var(--text-color)', wordBreak: 'break-word' }}
-            >
-              Selected File: {fileName}
-            </Typography>
+            <TextField
+              label="File Name"
+              value={fileName}
+              onChange={(e) => setFileName(e.target.value)}
+              fullWidth
+              sx={{
+                '& .MuiInputLabel-root': { color: 'var(--text-color)' }, // Default label color
+                '& .MuiInputLabel-root.Mui-focused': { color: 'var(--highlight-color)' }, // Focused label color
+                input: { color: 'var(--text-color)' }, // Input text color
+                '& .MuiOutlinedInput-root': {
+                  '& fieldset': { borderColor: 'var(--text-color)' }, // Default border color
+                  '&:hover fieldset': { borderColor: 'var(--highlight-color)' }, // Hover border color
+                  '&.Mui-focused fieldset': { borderColor: 'var(--highlight-color)' }, // Focused border color
+                },
+                '& input:-webkit-autofill': {
+                  WebkitBoxShadow: '0 0 0 100px var(--secondary-bg) inset', // Change autofill background
+                  WebkitTextFillColor: 'var(--text-color)', // Change autofill text color
+                  transition: 'background-color 5000s ease-in-out 0s', // Smooth transition
+                },
+              }}
+            />
           )}
         </Box>
 
@@ -148,15 +163,19 @@ const UploadModal = ({ open, onClose, onUpload }) => {
           <Button
             onClick={handleUpload}
             variant="contained"
-            disabled={!fileContent}
+            disabled={!fileContent || !fileName.trim()}
             sx={{
               width: '120px',
-              backgroundColor: fileContent ? 'var(--button-bg)' : 'var(--button-disabled-bg-red)', // Use a lighter color for disabled state
+              backgroundColor:
+                fileContent && fileName.trim()
+                  ? 'var(--button-bg)'
+                  : 'var(--button-disabled-bg-red)',
               color: 'white',
               '&:hover': {
-                backgroundColor: fileContent
-                  ? 'var(--button-hover-bg)'
-                  : 'var(--button-disabled-bg)', // Prevent hover effect when disabled
+                backgroundColor:
+                  fileContent && fileName.trim()
+                    ? 'var(--button-hover-bg)'
+                    : 'var(--button-disabled-bg)',
               },
             }}
           >
