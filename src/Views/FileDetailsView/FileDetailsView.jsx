@@ -77,8 +77,8 @@ const FileDetailsPage = () => {
       if (!fileHasData && fileId) {
         const selectedFileId = fileId;
         const fileReadRes = await axiosWrapper({
-          method: 'post',
-          path: 'files/readById',
+          method: 'get',
+          path: `files/${selectedFileId}`,
           data: {
             id: selectedFileId,
           },
