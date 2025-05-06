@@ -161,6 +161,11 @@ const FileDetailsPage = () => {
     }
   };
 
+  const skippedCount = Object.values(statusCounts).reduce(
+    (sum, type) => (['skipped', 'pending', 'todo', 'ignored'].includes(type) ? sum + 1 : sum),
+    0
+  );
+
   return (
     <Box p={4}>
       <Box display="flex" justifyContent="space-between" alignItems="center">
@@ -286,12 +291,9 @@ const FileDetailsPage = () => {
           color="error"
           variant={chipVariants.error}
         />
+
         <StatusChip
-          count={Object.values(statusCounts).reduce(
-            (sum, type) =>
-              ['skipped', 'pending', 'todo', 'ignored'].includes(type) ? sum + 1 : sum,
-            0
-          )}
+          count={skippedCount || '0'}
           label="Skipped"
           color="default"
           variant={chipVariants.default}
