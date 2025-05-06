@@ -1,10 +1,10 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import UploadModal from './UploadModal';
+import UploadModal from '../UploadModal';
 import '@testing-library/jest-dom';
-import validateUploadedJSON from '../../../utils/validateUploadedJSON';
+import validateUploadedJSON from '../../../../utils/validateUploadedJSON';
 
 // Mock the validateUploadedJSON utility
-jest.mock('../../../utils/validateUploadedJSON');
+jest.mock('../../../../utils/validateUploadedJSON');
 
 describe('UploadModal', () => {
   const onCloseMock = jest.fn();
