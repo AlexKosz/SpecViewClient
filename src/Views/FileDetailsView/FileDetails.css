@@ -24,4 +24,6 @@
 :root {
   --outlined-infoButton-disabled-color: #90a0d3bb;
   --outlined-infoButton-color: #5fbad6;
+  --outlined-danger-disabled-color: #d64d4dbb;
+  --outlined-danger-color: #ac6767;
 }

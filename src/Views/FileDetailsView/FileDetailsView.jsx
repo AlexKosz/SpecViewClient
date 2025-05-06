@@ -4,6 +4,8 @@ import { Button, Box, Typography, Paper, Snackbar, Tooltip } from '@mui/material
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import SaveIcon from '@mui/icons-material/Save';
 import ShareIcon from '@mui/icons-material/Share';
+import DeleteIcon from '@mui/icons-material/Delete';
+
 import { groupTestResultsAsTree } from '../../utils/groupFilesByPath';
 
 import StatusChip from '../../components/StatusChip/StatusChip';
@@ -22,11 +24,15 @@ import axiosWrapper from '../../utils/apiRequests/axiosWrapper';
 
 import urls, { baseFileDetailsUrl } from '../../urls';
 import { setActiveFile } from '../../features/files/filesSlice';
+import DeleteModal from '../../components/DeleteModal/DeleteModal';
 
 const FileDetailsPage = () => {
   const file = useSelector((state) => state.files.activeFile);
   const location = useLocation();
   const dispatch = useDispatch();
+
+  const user = useSelector((state) => state.user?.userInfo);
+
   const [filterData, setFilterData] = useState({
     searchTerm: '',
     searchFileName: true,
@@ -42,6 +48,8 @@ const FileDetailsPage = () => {
   const [statusCounts, setStatusCounts] = useState({});
 
   const [treeData, setTreeData] = useState({});
+
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const navigate = useNavigate();
 
@@ -117,6 +125,11 @@ const FileDetailsPage = () => {
     setIsCopySnackbarOpen(true);
   };
 
+  const handleDelete = async () => {
+    if (isDeleteModalOpen) return;
+    setIsDeleteModalOpen(true);
+  };
+
   const handleSnackbarClose = (event, reason) => {
     if (reason === 'clickaway') return;
     setIsCopySnackbarOpen(false);
@@ -137,6 +150,17 @@ const FileDetailsPage = () => {
     },
   };
 
+  const handleDeleteConfirm = async () => {
+    const response = await axiosWrapper({
+      method: 'DELETE',
+      path: `files/${fileId}`,
+    });
+
+    if (!response.error) {
+      navigate(urls.base);
+    }
+  };
+
   return (
     <Box p={4}>
       <Box display="flex" justifyContent="space-between" alignItems="center">
@@ -155,6 +179,13 @@ const FileDetailsPage = () => {
           onClose={snackbarProps.onClose}
           anchorOrigin={snackbarProps.anchorOrigin}
           sx={snackbarProps.sx}
+        />
+
+        <DeleteModal
+          open={isDeleteModalOpen}
+          onClose={() => setIsDeleteModalOpen(false)}
+          onConfirm={handleDeleteConfirm}
+          itemName={file?.name}
         />
 
         <Box>
@@ -193,6 +224,29 @@ const FileDetailsPage = () => {
             disableTouchListener={!isFileOnlyUploaded}
           >
             <Box sx={{ cursor: isFileOnlyUploaded ? 'not-allowed' : 'pointer' }}>
+              {!isFileOnlyUploaded && file?.userId === user?._id && (
+                <Button
+                  startIcon={<DeleteIcon />}
+                  color="primary"
+                  onClick={handleDelete}
+                  variant="outlined"
+                  sx={{
+                    color: isFileOnlyUploaded
+                      ? 'var(--outlined-danger-disabled-color)'
+                      : 'var(--outlined-danger-color)',
+                    border: `1px solid var(--${
+                      isFileOnlyUploaded
+                        ? 'outlined-danger-disabled-color'
+                        : 'outlined-danger-color'
+                    })`,
+                    pointerEvents: isFileOnlyUploaded ? 'none' : 'auto',
+                    mr: 1,
+                  }}
+                >
+                  Delete
+                </Button>
+              )}
+
               <Button
                 startIcon={<ShareIcon />}
                 color="primary"
