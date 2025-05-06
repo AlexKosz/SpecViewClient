@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Box, Typography, Grid, CircularProgress, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import axiosWrapper from '../../utils/apiRequests/axiosWrapper';
 import FileCard from './components/FileCard';
 import UploadModal from './components/UploadModal';
-import { baseFileDetailsUrl } from '../../urls';
+import urls, { baseFileDetailsUrl } from '../../urls';
+import { setActiveFile } from '../../features/files/filesSlice';
 
 const Dashboard = () => {
   const user = useSelector((state) => state.user.userInfo);
@@ -13,6 +14,7 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setModalOpen] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -36,15 +38,9 @@ const Dashboard = () => {
   }, [user]);
 
   const handleUpload = async (file) => {
-    const response = await axiosWrapper({
-      method: 'post',
-      path: 'files/upload',
-      data: file,
-      headers: { 'Content-Type': 'multipart/form-data' },
-    });
-
-    if (response?.data?.file) {
-      setFiles((prevFiles) => [response.data.file, ...prevFiles]);
+    if (file) {
+      dispatch(setActiveFile(file));
+      navigate(urls.uploadedFileDetails);
     }
   };
 
