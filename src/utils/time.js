@@ -1,5 +1,13 @@
-function formatEpochToDate(epoch) {
-  const date = new Date(epoch); // No need to multiply by 1000, as it's in milliseconds
+const formatEpochToDate = (epoch) => {
+  if (epoch === null || epoch === undefined) {
+    return 'Invalid Date';
+  }
+
+  const date = new Date(Number(epoch));
+
+  if (Number.isNaN(date.getTime())) {
+    return 'Invalid Date';
+  }
 
   const options = {
     hour: '2-digit',
@@ -10,9 +18,7 @@ function formatEpochToDate(epoch) {
     year: '2-digit',
   };
 
-  const formattedDate = new Intl.DateTimeFormat('en-US', options).format(date);
-
-  return formattedDate;
-}
+  return new Intl.DateTimeFormat('en-US', options).format(date);
+};
 
 export default formatEpochToDate;
