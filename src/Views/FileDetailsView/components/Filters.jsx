@@ -11,6 +11,7 @@ import {
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import Button from '@mui/material/Button';
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
 
 const Filters = ({ filterData, setFilterData }) => {
   const setSearchTerm = (searchTerm) => {
@@ -47,6 +48,7 @@ const Filters = ({ filterData, setFilterData }) => {
         aria-describedby={id}
         variant="outlined"
         onClick={handleClick}
+        startIcon={<FilterAltIcon />}
         sx={{
           color: 'var(--outlined-infoButton-color)',
           border: `1px solid var(--outlined-infoButton-color)`,

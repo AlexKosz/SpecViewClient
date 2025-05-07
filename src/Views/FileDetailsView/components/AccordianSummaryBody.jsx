@@ -13,19 +13,15 @@ const AccordianSummaryBody = ({ data }) => {
       </h5>
 
       <div className="flex accordianCountsWrapper">
-        {typeof data.passed === 'number' && (
+        {typeof data.passed === 'number' && data.passed !== 0 && (
           <StatusChip
-            count={data.passed || '0'}
+            count={data.passed}
             variant={chipVariants.success}
             sx={{ padding: '0.2rem' }}
           />
         )}
-        {typeof data.failed === 'number' && (
-          <StatusChip
-            count={data.failed || '0'}
-            variant={chipVariants.error}
-            sx={{ padding: '0.2rem' }}
-          />
+        {typeof data.failed === 'number' && data.failed !== 0 && (
+          <StatusChip count={data.failed} variant={chipVariants.error} sx={{ padding: '0.2rem' }} />
         )}
       </div>
     </div>
