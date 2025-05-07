@@ -39,7 +39,7 @@ const RegisterModal = ({ onClose, switchToLogin }) => {
     });
 
     if (data?.data?.user?._id) {
-      dispatch(updateUserInfo(data));
+      dispatch(updateUserInfo(data?.data?.user));
       onClose();
     } else {
       const respErrors = data?.error?.response?.data?.errors || [];

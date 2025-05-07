@@ -31,7 +31,7 @@ const LoginModal = ({ onClose, switchToRegister }) => {
     });
 
     if (data?.data?._id) {
-      dispatch(updateUserInfo(data));
+      dispatch(updateUserInfo(data?.data));
       onClose();
     } else {
       setErrors(data?.data?.msg);
