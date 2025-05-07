@@ -15,7 +15,14 @@ const RecursiveAccordion = React.memo(
     };
 
     return (
-      <Accordion expanded={expanded} onChange={handleChange}>
+      <Accordion
+        expanded={expanded}
+        onChange={handleChange}
+        sx={{
+          backgroundColor: 'var(--paper-background-color)',
+          color: 'var(--paper-text-color)',
+        }}
+      >
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <AccordianSummaryBody data={data} />
         </AccordionSummary>
