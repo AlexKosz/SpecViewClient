@@ -14,11 +14,7 @@ html {
   align-items: center;
   justify-content: center;
   height: 65vh;
-  background: linear-gradient(
-    135deg,
-    var(--secondary-bg),
-    #333333
-  ); /* Dark gradient */
+  background: linear-gradient(135deg, var(--secondary-bg), #333333); /* Dark gradient */
   color: white;
   text-align: center;
   padding: 3rem 2rem;
@@ -28,6 +24,7 @@ html {
   font-size: 3rem;
   font-weight: bold;
   margin-bottom: 1rem;
+  color: var(--highlight-color);
 }
 
 .hero .heroDesc {
@@ -66,9 +63,7 @@ html {
   justify-content: center;
   padding: 2rem;
   border-radius: 12px;
-  background-color: var(
-    --feature-bg
-  ); /* Slightly lighter dark background for feature cards */
+  background-color: var(--feature-bg); /* Slightly lighter dark background for feature cards */
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   flex: 1;
   transition:
@@ -157,4 +152,18 @@ footer a:hover {
 
 .uploadIcon {
   margin-right: 0.5rem;
+}
+
+.heroFileDisclaimer {
+  margin-top: 1rem;
+}
+
+.heroFileDisclaimer p {
+  font-size: 0.9rem;
+  color: var(--text-color);
+  text-align: center;
+}
+
+.heroFileDisclaimer STRONG {
+  color: var(--highlight-color);
 }

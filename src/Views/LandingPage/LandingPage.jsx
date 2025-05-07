@@ -50,7 +50,9 @@ const LandingPage = () => {
     <div>
       <section className="hero">
         <h1>SpecView</h1>
-        <p className="heroDesc">Upload your Jest test output JSON and explore results with ease.</p>
+        <p className="heroDesc">
+          Visualize Your Jest Tests Instantly. Upload. Search. Save. Share.
+        </p>
         <div className={fileName ? '' : 'flex'}>
           <div className="flex">
             <Button
@@ -72,22 +74,21 @@ const LandingPage = () => {
             </Button>
             {fileName && <p className="file-name">Selected File: {fileName}</p>}
           </div>
-
           {fileName && (
             <Button
               size="large"
               variant={isFileValid ? 'outlined' : 'disabled'}
               onClick={handleViewResults}
             >
-              View Results
+              Go to Preview
             </Button>
           )}
-
-          {!fileName && (
-            <Button size="large" variant="outlined">
-              Sign In / Create Account
-            </Button>
-          )}
+        </div>
+        <div className="heroFileDisclaimer">
+          <p>
+            Note: Uploading a file does <strong>not</strong> save it.
+          </p>
+          <p>Your data stays local unless you&apos;re signed in and choose to save it.</p>
         </div>
         <input
           type="file"
