@@ -43,7 +43,15 @@ const Filters = ({ filterData, setFilterData }) => {
 
   return (
     <div>
-      <Button aria-describedby={id} variant="contained" onClick={handleClick}>
+      <Button
+        aria-describedby={id}
+        variant="outlined"
+        onClick={handleClick}
+        sx={{
+          color: 'var(--outlined-infoButton-color)',
+          border: `1px solid var(--outlined-infoButton-color)`,
+        }}
+      >
         Filters
       </Button>
       <Popover
@@ -59,6 +67,7 @@ const Filters = ({ filterData, setFilterData }) => {
           paper: {
             sx: {
               p: 2,
+              bgcolor: 'var(--paper-background-color)',
             },
           },
         }}
@@ -71,7 +80,7 @@ const Filters = ({ filterData, setFilterData }) => {
           onChange={(e) => setSearchTerm(e.target.value)}
           sx={{
             mb: 3,
-            bgcolor: 'white',
+            backgroundColor: 'var(--paper-background-color)',
             input: { color: 'black' },
             '& .MuiOutlinedInput-root': {
               '& fieldset': { borderColor: 'gray' },
