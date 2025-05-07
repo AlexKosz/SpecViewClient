@@ -73,7 +73,7 @@ describe('LoginModal', () => {
 
     // Wait for the dispatch to be called
     await waitFor(() => {
-      expect(dispatch).toHaveBeenCalledWith(updateUserInfo({ data: { _id: '123' } }));
+      expect(dispatch).toHaveBeenCalledWith(updateUserInfo({ _id: '123' }));
     });
   });
 
