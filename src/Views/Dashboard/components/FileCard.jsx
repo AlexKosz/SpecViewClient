@@ -26,7 +26,13 @@ const FileCard = ({ file }) => {
         borderRadius: 3,
       }}
     >
-      <CardContent sx={{ p: { xs: 2, sm: 3 } }}>
+      <CardContent
+        sx={{
+          p: { xs: 2, sm: 3 },
+          backgroundColor: 'var(--paper-background-color)',
+          color: 'var(--paper-text-color)',
+        }}
+      >
         <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 2 }}>
           <Typography variant="h6" sx={{ fontSize: { xs: '1rem', sm: '1.25rem' } }}>
             {file.name || 'Untitled File'}
