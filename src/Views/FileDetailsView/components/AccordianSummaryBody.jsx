@@ -18,10 +18,16 @@ const AccordianSummaryBody = ({ data }) => {
             count={data.passed}
             variant={chipVariants.success}
             sx={{ padding: '0.2rem' }}
+            testId="passed-count"
           />
         )}
         {typeof data.failed === 'number' && data.failed !== 0 && (
-          <StatusChip count={data.failed} variant={chipVariants.error} sx={{ padding: '0.2rem' }} />
+          <StatusChip
+            count={data.failed}
+            variant={chipVariants.error}
+            sx={{ padding: '0.2rem' }}
+            testId="failed-count"
+          />
         )}
       </div>
     </div>

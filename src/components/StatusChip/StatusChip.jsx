@@ -4,7 +4,7 @@ import { Chip } from '@mui/material';
 import chipVariants from './chipVariants';
 import './StatusChip.css';
 
-const StatusChip = ({ label, count, variant, sx }) => {
+const StatusChip = ({ label, count, variant, sx, testId }) => {
   const variantClass = chipVariants[variant] || chipVariants.default;
 
   let labelText = '';
@@ -21,6 +21,7 @@ const StatusChip = ({ label, count, variant, sx }) => {
     <Chip
       label={labelText}
       variant="outlined"
+      data-testId={testId}
       sx={{
         mr: 1,
         backgroundColor: `var(--${variantClass}-bg-color)`,
@@ -41,10 +42,12 @@ StatusChip.propTypes = {
   count: PropTypes.number.isRequired,
   variant: PropTypes.string.isRequired,
   sx: PropTypes.shape({}),
+  testId: PropTypes.string,
 };
 
 StatusChip.defaultProps = {
   sx: {},
+  testId: '',
 };
 
 export default StatusChip;
