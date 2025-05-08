@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Box, Typography, Grid, CircularProgress, Button } from '@mui/material';
+import { Box, Typography, Grid, CircularProgress, Button, Divider } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import axiosWrapper from '../../utils/apiRequests/axiosWrapper';
 import FileCard from './components/FileCard';
@@ -58,18 +58,28 @@ const Dashboard = () => {
 
   return (
     <Box sx={{ padding: 2 }}>
-      <Typography variant="h4" gutterBottom>
-        Welcome, {user?.fullName}
-      </Typography>
-
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={() => setModalOpen(true)}
-        sx={{ marginBottom: 2 }}
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          padding: 4,
+        }}
       >
-        Upload File
-      </Button>
+        <Typography variant="h4" gutterBottom>
+          Welcome, {user?.fullName}
+        </Typography>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => setModalOpen(true)}
+          sx={{ marginBottom: 1.5 }}
+        >
+          Upload File
+        </Button>
+      </Box>
+
+      <Divider sx={{ mb: 3, opacity: '10%' }} />
 
       {loading ? (
         <Box display="flex" justifyContent="center" alignItems="center" minHeight="50vh">
