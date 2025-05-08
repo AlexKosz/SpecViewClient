@@ -7,6 +7,7 @@ const urls = {
   dashboard: '/dashboard',
   fileDetails: `${baseFileDetailsUrl}/:fileId`,
   uploadedFileDetails: '/uploadedFileDetails',
+  privacy: '/privacy',
 };
 
 export default urls;

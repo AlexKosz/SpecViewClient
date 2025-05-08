@@ -119,18 +119,6 @@ const LandingPage = () => {
           </div>
         </div>
       </section>
-
-      {/* Footer */}
-      <footer>
-        © 2025 JestView |{' '}
-        <a href="/asd" className="underline">
-          GitHub
-        </a>{' '}
-        |{' '}
-        <a href="/bc" className="underline">
-          Privacy
-        </a>
-      </footer>
     </div>
   );
 };

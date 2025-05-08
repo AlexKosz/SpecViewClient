@@ -1,0 +1,17 @@
+.footer {
+  background-color: var(--secondary-bg) !important;
+  color: var(--text-color) !important;
+  padding: 20px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.footer a {
+  color: var(--text-color) !important;
+  text-decoration: none; /* Remove underline from links */
+  font-weight: bold;
+}
+
+.footer a:hover {
+  text-decoration: underline; /* Add underline on hover */
+}
