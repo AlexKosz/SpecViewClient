@@ -119,29 +119,28 @@ const UploadModal = ({ open, onClose, onUpload }) => {
             <input type="file" hidden accept="application/json" onChange={handleFileChange} />
           </Button>
 
-          {fileName && !error && (
-            <TextField
-              label="File Name"
-              value={fileName}
-              onChange={(e) => setFileName(e.target.value)}
-              fullWidth
-              sx={{
-                '& .MuiInputLabel-root': { color: 'var(--text-color)' }, // Default label color
-                '& .MuiInputLabel-root.Mui-focused': { color: 'var(--highlight-color)' }, // Focused label color
-                input: { color: 'var(--text-color)' }, // Input text color
-                '& .MuiOutlinedInput-root': {
-                  '& fieldset': { borderColor: 'var(--text-color)' }, // Default border color
-                  '&:hover fieldset': { borderColor: 'var(--highlight-color)' }, // Hover border color
-                  '&.Mui-focused fieldset': { borderColor: 'var(--highlight-color)' }, // Focused border color
-                },
-                '& input:-webkit-autofill': {
-                  WebkitBoxShadow: '0 0 0 100px var(--secondary-bg) inset', // Change autofill background
-                  WebkitTextFillColor: 'var(--text-color)', // Change autofill text color
-                  transition: 'background-color 5000s ease-in-out 0s', // Smooth transition
-                },
-              }}
-            />
-          )}
+          <TextField
+            label="File Name"
+            value={fileName}
+            onChange={(e) => setFileName(e.target.value)}
+            fullWidth
+            disabled={!fileContent || error}
+            sx={{
+              '& .MuiInputLabel-root': { color: 'var(--text-color)' }, // Default label color
+              '& .MuiInputLabel-root.Mui-focused': { color: 'var(--highlight-color)' }, // Focused label color
+              input: { color: 'var(--text-color)' }, // Input text color
+              '& .MuiOutlinedInput-root': {
+                '& fieldset': { borderColor: 'var(--text-color)' }, // Default border color
+                '&:hover fieldset': { borderColor: 'var(--highlight-color)' }, // Hover border color
+                '&.Mui-focused fieldset': { borderColor: 'var(--highlight-color)' }, // Focused border color
+              },
+              '& input:-webkit-autofill': {
+                WebkitBoxShadow: '0 0 0 100px var(--secondary-bg) inset', // Change autofill background
+                WebkitTextFillColor: 'var(--text-color)', // Change autofill text color
+                transition: 'background-color 5000s ease-in-out 0s', // Smooth transition
+              },
+            }}
+          />
         </Box>
 
         <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, mt: 4 }}>
