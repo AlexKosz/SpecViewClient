@@ -1,96 +1,55 @@
-specView
-specView is a Jest output JSON parser with the ability to upload and share your test results. The app allows users to view, search, and share their Jest test results seamlessly.
+# SpecView - Jest Test Analyzer
 
-Features
-Upload and parse Jest output in JSON format.
+[![Live Demo](https://img.shields.io/badge/demo-live-green?style=flat-square)](https://specview.koszuta.dev)
+[![Backend Repo](https://img.shields.io/badge/backend-source-blue?style=flat-square)](https://github.com/AlexKosz/SpecViewServer)
 
-Search for file names, test names, or assertions.
+![SpecView Interface](/public/screenshots/fileDetails.png)
+![SpecView Interface](/public/screenshots/userDash.png)
 
-Share your test results with friends.
+A web interface for analyzing and sharing Jest test results. Upload JSON reports, search assertions, and collaborate with your team.
 
-Stores test results in MongoDB for easy access and sharing.
+## Key Features
 
-Tech Stack
-Frontend: React.js
+- **Instant Analysis**: Upload Jest JSON output (`jest --json --outputFile=results.json`)
+- **Smart Search**: Filter by test name, file, status, or assertion text
+- **Secure Accounts**: Save reports to your profile
+- **Shareable Links**: Generate URLs to share test results
+- **CI/CD Ready**: Designed for modern development workflows
 
-Backend: Express.js (server in a separate repo)
+## How to Use
 
-Database: MongoDB
+1. **Upload** your Jest JSON file (drag & drop or file picker)
+2. **Search** tests by:
+   - File path (`src/components/Button.test.js`)
+   - Folder within path (`src/components/Button.test.js`)
+   - Assertion text (`Login Modal should display all proper fields`)
+3. **Save** (requires login) or **Share** (public link)
 
-Installation
-Clone the repository:
+## Tech Stack
 
-bash
-Copy
-Edit
-git clone https://github.com/your-username/specView.git
-Navigate to the project directory:
+| Area       | Technology    |
+| ---------- | ------------- |
+| Framework  | React 18      |
+| State      | Redux Toolkit |
+| Styling    | Mui           |
+| API Client | Axios         |
+| Hosting    | AWS           |
 
-bash
-Copy
-Edit
-cd specView
-Install the dependencies:
+## .env
 
-bash
-Copy
-Edit
-npm install
-Run the app locally:
+set this in your .env
 
-bash
-Copy
-Edit
-npm start
-Visit http://localhost:3000 in your browser to see the app in action.
+```bash
+REACT_APP_API_URL=
+```
 
-Usage
-Upload your Jest JSON output using the upload button.
+## Contributing
 
-Use the search bar to find specific file names, test names, or assertions.
+Issues and PRs welcome!
 
-Share the uploaded results with your team or friends via the shareable link.
+## Development Setup
 
-Contributing
-Feel free to fork the repo and submit pull requests! If you find a bug or have a feature request, please open an issue on the GitHub repo.
-
-License
-This project is licensed under the MIT License.
-
-How does that look to you? Let me know if you'd like any changes or additions!
-
-You said:
-how do i put that as the read me
-
-ChatGPT said:
-To create and add that README to your project, follow these steps:
-
-Create the README file:
-
-In the root directory of your specView client repo, create a new file named README.md.
-
-You can do this by either creating the file manually or running this command in your terminal:
-
-bash
-Copy
-Edit
-touch README.md
-Add the content:
-
-Open the README.md file in your code editor.
-
-Copy the content I provided in the previous response and paste it into the README.md file.
-
-Save and commit the changes:
-
-After saving the README.md file, use Git to stage and commit the changes:
-
-bash
-Copy
-Edit
-git add README.md
-git commit -m "Add README to specView client repo"
-git push
-Check the changes:
-
-Once the file is pushed to your GitHub (or other repository host), the README will automatically be displayed on your repository’s main page.
+```bash
+npm install  # Install dependencies
+npm start   # Run dev server (http://localhost:3000)
+```
