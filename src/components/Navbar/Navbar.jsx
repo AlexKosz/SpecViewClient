@@ -13,6 +13,7 @@ import { logout, updateUserInfo } from '../../features/user/userSlice';
 
 import LoginModal from '../Login/LoginModal';
 import RegisterModal from '../Register/RegisterModal';
+import specViewLogo from '../../assets/specViewLogo.svg';
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -67,7 +68,7 @@ const Navbar = () => {
           className="MuiTypography-root"
           onClick={onTitleClick}
         >
-          <img src="/logo.svg" alt="Logo" style={{ height: '24px', marginRight: '8px' }} />
+          <img src={specViewLogo} alt="Logo" style={{ height: '24px', marginRight: '8px' }} />
           SpecView
         </Typography>
         {user?._id ? (
